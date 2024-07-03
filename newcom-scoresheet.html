@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planilla de Newcom</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .scoresheet {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+        /* Estilo para la columna de actividades */
+        th:first-child, td:first-child {
+            font-weight: bold;
+            font-size: 1.2em;
+            text-align: left;
+        }
+        .counter {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 80px;
+            margin: 0 auto;
+        }
+        .counter button {
+            width: 25px;
+            height: 25px;
+            font-size: 16px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+        .counter span {
+            font-size: 16px;
+            width: 25px;
+            text-align: center;
+        }
+        .title {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .creator {
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        /* Colores para cada jugador */
+        th:nth-child(2), td:nth-child(2) { background-color: #E0F7FA; } /* Celeste claro */
+        th:nth-child(3), td:nth-child(3) { background-color: #B2EBF2; } /* Celeste */
+        th:nth-child(4), td:nth-child(4) { background-color: #80DEEA; } /* Celeste oscuro */
+        th:nth-child(5), td:nth-child(5) { background-color: #E8F5E9; } /* Verde claro */
+        th:nth-child(6), td:nth-child(6) { background-color: #C8E6C9; } /* Verde */
+        th:nth-child(7), td:nth-child(7) { background-color: #A5D6A7; } /* Verde oscuro */
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .scoresheet {
+                padding: 5px;
+            }
+            th, td {
+                padding: 5px;
+            }
+            th:first-child, td:first-child {
+                font-size: 1.1em;
+            }
+            .counter {
+                width: 70px;
+            }
+            .counter button {
+                width: 20px;
+                height: 20px;
+                font-size: 14px;
+            }
+            .counter span {
+                font-size: 14px;
+                width: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scoresheet">
+        <h1 class="title">Planilla Newcom</h1>
+        <p class="creator">Creada por Adolfo Ovejero</p>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Actividad</th>
+                        <th>Jugador 1</th>
+                        <th>Jugador 2</th>
+                        <th>Jugador 3</th>
+                        <th>Jugador 4</th>
+                        <th>Jugador 5</th>
+                        <th>Jugador 6</th>
+                    </tr>
+                </thead>
+                <tbody id="activities">
+                    <!-- Las actividades se agregarán aquí dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <button onclick="addActivity()">Agregar Actividad</button>
+    </div>
+
+    <script>
+        const activities = [
+            "Saque",
+            "Recepción",
+            "Ataque",
+            "Bloqueo",
+            "Defensa"
+        ];
+
+        function createCounter(initialValue = 0) {
+            const counter = document.createElement('div');
+            counter.className = 'counter';
+            
+            const minusButton = document.createElement('button');
+            minusButton.textContent = '-';
+            minusButton.onclick = () => updateCounter(counter, -1);
+
+            const display = document.createElement('span');
+            display.textContent = initialValue;
+
+            const plusButton = document.createElement('button');
+            plusButton.textContent = '+';
+            plusButton.onclick = () => updateCounter(counter, 1);
+
+            counter.appendChild(minusButton);
+            counter.appendChild(display);
+            counter.appendChild(plusButton);
+
+            return counter;
+        }
+
+        function updateCounter(counter, change) {
+            const display = counter.querySelector('span');
+            let value = parseInt(display.textContent);
+            value += change;
+            display.textContent = value;
+        }
+
+        function addActivity(activity = '') {
+            const tbody = document.getElementById('activities');
+            const row = tbody.insertRow();
+            
+            const cellActivity = row.insertCell();
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = activity || '';
+            input.placeholder = 'Ingrese la actividad';
+            input.style.fontWeight = 'bold';
+            input.style.fontSize = '1.2em';
+            input.style.width = '100%';
+            input.style.border = 'none';
+            input.style.background = 'transparent';
+            cellActivity.appendChild(input);
+
+            for (let i = 0; i < 6; i++) {
+                const cellCounter = row.insertCell();
+                cellCounter.appendChild(createCounter());
+            }
+        }
+
+        // Agregar actividades iniciales
+        activities.forEach(addActivity);
+    </script>
+</body>
+</html>
